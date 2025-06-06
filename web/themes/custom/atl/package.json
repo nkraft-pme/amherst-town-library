@@ -1,0 +1,28 @@
+{
+  "name": "atl",
+  "version": "1.0.0",
+  "description": "Drupal theme",
+  "main": "index.js",
+  "browserslist": [
+    "last 2 versions",
+    "> 1%",
+    "maintained node versions",
+    "ie 8-11"
+  ],
+  "scripts": {
+    "prebuild:css": "sass scss/styles.scss:assets/css/styles.css scss/discover_carousel.scss:assets/css/discover_carousel.css scss/print.scss:assets/css/print.css scss/wysiwyg.scss:assets/css/wysiwyg.css",
+    "build:css": "postcss --use autoprefixer < assets/css/styles.css | postcss --map -o assets/css/styles.css",
+    "build": "npm run build:css",
+    "build:watch": "watch 'npm run build' sass components"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.2",
+    "cssnano": "^5.0.17",
+    "sass": "^1.49.9",
+    "postcss": "^8.4.6",
+    "postcss-cli": "^9.1.0",
+    "watch": "^1.0.2"
+  }
+}

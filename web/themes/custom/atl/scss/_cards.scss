@@ -1,0 +1,98 @@
+.box .button {
+  min-width:180px;
+}
+.card {
+  position: relative;
+}
+.card--icon {
+  text-align: center;
+  @media screen and (min-width: $bp-tablet) {
+    text-align: left;
+  }   
+}
+.alignment--centered {
+  .card--icon {
+    text-align: center;
+    @media screen and (min-width: $bp-tablet) {
+      text-align: center;
+    }   
+  }
+}
+.card-content {
+  text-align: center;
+  @media screen and (min-width: $bp-tablet) {
+    text-align: left;
+  }
+
+  .button {
+    position: absolute;
+    bottom: 1.5rem;
+    width:300px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    @media screen and (min-width: $bp-tablet) {
+      position: absolute;
+      bottom: 1.5rem;
+      min-width:200px;     
+      width:auto;
+      left: unset;
+      transform: unset;      
+    }       
+  }
+  .content.content-with-button {
+    padding-bottom: 4rem;
+  }
+}
+.alignment--centered .card-content {
+  .button {
+    left: 50%;
+    transform: translate(-50%, 0);
+    min-width: 200px;
+  }
+  .card--icon {
+    text-align: center;
+  }
+  // .content {
+  //   // padding-bottom: 4rem;
+  // }
+}
+// .alignment--centered {
+//   text-align: center;
+// }
+// .alignment--left {
+//   text-align: center;
+//   @media screen and (min-width: $bp-tablet) {
+//     text-align: left;
+//   }
+// }
+// .alignment--right {
+//   text-align: right;
+// }
+
+// ICON
+.card--icon {
+  padding:1.5rem 1.5rem 0;
+  a {
+    color:$color-primary;
+  }
+  &--green {
+    a {
+      color:$color-primary;
+    }
+  }
+  &--merlot {
+    a {
+      color:$color-maroon;
+    }
+  }
+  &--gold {
+    a {
+      color:$color-gold;
+    }
+  } 
+  &--khaki {
+    a {
+      color:$color-secondary;
+    }
+  }    
+}

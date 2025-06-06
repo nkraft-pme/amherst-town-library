@@ -1,0 +1,29 @@
+.book-navigation--ul {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.columns--book {
+  column-gap: 2rem;
+}
+
+.book--left-nav {
+  nav > ul {
+    > li {
+      font-weight:normal;
+      font-size:1.4rem;
+      font-family: $fancy-font;
+      a {
+        text-decoration: underline;
+      }
+    }
+    ul {
+      li {
+        font-size:1.2rem;
+        font-weight:normal;
+        font-family: $sans-serif;
+        margin:.5rem 0;
+      }
+    }    
+  }
+}

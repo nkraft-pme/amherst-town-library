@@ -1,0 +1,22 @@
+name: atl
+type: theme
+description: 'A Drulma sub-theme.'
+logo: logo.png
+version: 1.0.0
+core_version_requirement: ^9 || ^10
+libraries:
+  - 'atl/global'
+base theme: drulma
+regions:
+  primary_menu: 'Navbar'
+  header: 'Hero Header'
+  title: 'Hero body (title)'
+  secondary_menu: 'Hero footer (tabs)'
+  breadcrumb: 'Breadcrumb'
+  highlighted: 'Highlighted'
+  help: 'Help'
+  content: 'Content'
+  sidebar_first: 'Sidebar First'
+  sidebar_second: 'Sidebar Second'
+  footer: 'Footer'
+  hidden: 'Hidden'

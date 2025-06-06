@@ -1,0 +1,72 @@
+.navbar {
+  .navbar-brand {
+    .navbar-brand--icon {
+      @media screen and (min-width: $bp-desktop) {
+        display: none;
+      }
+    }
+  }
+  .navbar-menu {
+    background-color: transparent;
+    box-shadow: none;
+    padding-top:0;
+    padding-bottom:0;
+    .navbar-item {
+      break-inside: avoid;
+      a {
+        border-bottom:1px solid #FFF;
+        @media screen and (min-width: $bp-desktop) {
+          border-bottom:none;
+        }    
+      }
+      .navbar-item {
+        padding-left: 0.25rem !important;
+        padding-right: 0.25rem !important;
+        position: relative;
+        padding-left:.25rem!important;
+        @media screen and (min-width: $bp-desktop) {
+          padding: 0.5rem 1rem !important
+        }        
+        a {
+          padding-left: 0.3rem;
+          display: block;
+          border-bottom:none;
+          @media screen and (min-width: $bp-desktop) {
+            padding-left:0;
+            display: block;
+          }   
+        }
+      }
+      .navbar-item::before {
+        content: "- ";
+        color: #FFF;
+        display: block;
+        position: absolute;
+        top: 0.45rem;
+        left: 0;
+        @media screen and (min-width: $bp-desktop) {
+          content:'';
+        }    
+      }
+    }
+  }
+  .navbar-end {
+    columns: 2;
+    @media screen and (min-width: $bp-lg-phone) {
+      columns: 3;
+    }  
+    @media screen and (min-width: $bp-desktop) {
+      columns: 0;
+    }    
+  }
+}
+
+.columns.columns--book {
+  .navbar-brand, .navbar-burger {
+    display:none;
+  }
+  .navbar-menu {
+    display:block!important;
+    box-shadow:none!important;
+  }
+}

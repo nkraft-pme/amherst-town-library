@@ -1,0 +1,13 @@
+{#
+/**
+ * @file
+ * Drulma theme implementation for page titles.
+ */
+#}
+{{ title_prefix }}
+{% if title|render %}
+  <div class="container container--narrow">
+  <h1{{ title_attributes }}>{{ title }}</h1>
+  </div>
+{% endif %}
+{{ title_suffix }}

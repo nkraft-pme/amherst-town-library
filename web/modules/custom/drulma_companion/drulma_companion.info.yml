@@ -1,0 +1,13 @@
+name: Drulma Companion
+type: module
+description: Extends Drulma theme with module functionalities.
+package: Bulma
+core_version_requirement: ^9.3 | ^10
+dependencies:
+  - hook_event_dispatcher:core_event_dispatcher (^3 || ^4)
+  - block_class:block_class (^1 || ^2)
+
+# Information added by Drupal.org packaging script on 2023-05-24
+version: '2.1.6+1-dev'
+project: 'drulma_companion'
+datestamp: 1684917072

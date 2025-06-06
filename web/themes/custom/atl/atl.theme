@@ -1,0 +1,211 @@
+<?php
+
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Url;
+use Drupal\filter\Render\FilteredMarkup;
+use Drupal\image\Entity\ImageStyle;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+
+/**
+ * @file
+ * Functions to support theming in the ATL theme.
+ */
+
+/**
+ * Implements hook_preprocess_region().
+ */
+function atl_preprocess_region(&$variables) {
+
+  // Create the $content variable that templates expect.
+  $variables['content'] = $variables['elements']['#children'];
+  $variables['region'] = $variables['elements']['#region'];
+
+  // Load Instance of custom search header block and make it a variable for twig.
+  $search_header = \Drupal::entityTypeManager()->getStorage('block')->load('sitesearchheader');
+  if (!empty($search_header)) {
+    $search_header_content = \Drupal::entityTypeManager()
+      ->getViewBuilder('block')
+      ->view($search_header);
+    if ($search_header_content) {
+      // Set block to variable for twig.
+      $variables['search_header_block'] = $search_header_content;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_media().
+ */
+function atl_preprocess_media(array &$variables) {
+  /**
+   * @var \Drupal\media\Entity\Media $media
+   */
+  $media = $variables['elements']['#media'];
+
+  // Put media url in variable to use in template.
+  // See \05-molecules\featured-card\media-featured-card.twig
+  $variables['media_url'] = $media->toUrl();
+
+  // If the media has a file field AND it's not NULL.
+  // @see media--file--embedded-file.html.twig.
+  if ($media->hasField('field_media_file') && $media->get('field_media_file')) {
+    $media_file = $media->get('field_media_file')->entity;
+    $variables['media_file_size'] = format_size($media_file->getSize());
+  }
+
+  if (!empty($variables['view_mode'])) {
+    $view_mode = Html::cleanCssIdentifier($variables['view_mode']);
+    $variables['attributes']['class'][] = $view_mode === 'colorbox' ? 'colorbox-small' : $view_mode;
+  }
+
+  $media_type = $variables['media'];
+  $bundle = $media_type->bundle();
+  // If the media is remote video. Get the video field.
+  if ($bundle == 'remote_video') {
+    $video_field = $media_type->get('field_media_oembed_video')->getValue();
+    $video_url = $video_field[0]['value'];
+
+    // Is it vimeo or youtube? Set a var to use in twig.
+    $variables['video_type'] = preg_match('/youtu\.?be/', $video_url) ? 'youtube' : 'vimeo';
+
+    if ($variables['video_type'] == 'youtube') {
+      // Regex to strip the video ID out of the URL for YT.
+      if (preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $video_url, $matches)) {
+        $variables['video_ID'] = $matches[1];
+      }
+    }
+    elseif ($variables['video_type'] == 'vimeo') {
+      // Regex to strip the video ID out of the URL for vimeo.
+      if (preg_match("/(https?:\/\/)?(www\.)?(player\.)?vimeo\.com\/?(showcase\/)*([0-9))([a-z]*\/)*([0-9]{6,11})[?]?.*/", $video_url, $matches)) {
+        $variables['video_ID'] = $matches[6];
+      }
+    }
+  }
+
+}
+
+function atl_preprocess_filter_caption(array &$variables) {
+  if (!empty($variables['tag']) && $variables['tag'] === 'drupal-media') {
+    $markup = (!empty($variables['node']) && $variables['node'] instanceof FilteredMarkup) ? $variables['node']->__toString() : '';
+    $view_mode_class = NULL;
+    $view_mode_class = stristr($markup, 'image_small') ? 'image-small' : $view_mode_class;
+    $view_mode_class = stristr($markup, 'colorbox') ? 'colorbox-small' : $view_mode_class;
+    $view_mode_class = stristr($markup, 'image_medium') ? 'image-medium' : $view_mode_class;
+    $view_mode_class = stristr($markup, 'colorbox_medium') ? 'colorbox-medium' : $view_mode_class;
+    $view_mode_class = stristr($markup, 'image_large') ? 'image-large' : $view_mode_class;
+    $view_mode_class = stristr($markup, 'colorbox_large') ? 'colorbox-large' : $view_mode_class;
+
+    if ($view_mode_class) {
+      $variables['classes'] .= " $view_mode_class";
+    }
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ *
+ * Create theme suggestions for page-title templates based on Content Type.
+ * Taken from https://drupal.stackexchange.com/a/219339
+ */
+function atl_theme_suggestions_page_title_alter(array &$suggestions, array $variables) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $media = \Drupal::routeMatch()->getParameter('media');
+
+  // Object check required, sometimes it's a string, yes, really. Who knew?
+  if ($node && $node instanceof NodeInterface) {
+    array_splice($suggestions, 1, 0, 'page_title__' . $node->getType());
+  } elseif ($media && $media instanceof \Drupal\media\MediaInterface) {
+    array_splice($suggestions, 1, 0, 'page_title__media__' . $media->bundle());
+  }
+}
+
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function atl_preprocess_node(&$variables) {
+  $contenttype = $variables['node']->bundle();
+
+  // /** @var Drupal\nida\Service\NidaHelper $nida_helper */
+  // $atl_helper = \Drupal::service('atl.helper');
+
+  /**
+   * The following code is used to concatenate the parts of the address field
+   * to use create a google maps URL variable in a node template.
+   * Ex. http://maps.google.com/?q=229+Main+Street%2C+Keene%2C+NH%2C+03435-1506%2C+us
+   * */
+  // Check if the node contains address field.
+  /** @var NodeInterface $node */
+  $node = $variables['elements']['#node'];
+
+}
+
+
+
+/**
+ * Implements template_preprocess_paragraph().
+ *
+ * This gets the media image from a field in a paragraph,
+ * loads the image style and builds a url from it
+ * then puts it in a variable to use in twig tpl.
+ * Using the 'banner' image style which only optimizes.
+ * See: hero-block-w-text-paragraph.twig
+ */
+
+/**
+ * Implements hook_theme_suggestions_page_alter().
+ */
+function atl_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node instanceof \Drupal\node\NodeInterface) {
+    $suggestions[] = 'page__' . $node->bundle();
+  }
+}
+
+function atl_preprocess_paragraph(&$variables) {
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+  $paragraph_type = $paragraph->getType();
+
+
+  // Only do this for Text+Image PT
+  if ($paragraph_type == 'text_image') {
+    // Do the crazy field exists/field isn't empty check to be safe??
+    if ($paragraph->hasField('field_image_block') && !$paragraph->get('field_image_block')->isEmpty()) {
+      // Get the media image field.
+      $media = $paragraph->get('field_image_block')->entity;
+      // Load the file.
+      $file = \Drupal\file\Entity\File::load($media->field_media_image->target_id);
+      // Also def make sure file isn't empty?!
+      if (!empty($file)) {
+        // If it's not empty, get the uri.
+        $file_uri = $file->getFileUri();
+        // Load the image style and build url.
+        $url_with_style = ImageStyle::load('banner')->buildUrl($file_uri);
+        // Put it in a var to use as bg img in twig.
+        $variables['hero_url'] = $url_with_style;
+      }
+    }
+  }
+  // Do the same for Health Topic Highlight paragraph.
+  if ($paragraph_type == 'highlight') {
+    // Do the crazy field exists/field isn't empty check to be safe??
+    if ($paragraph->hasField('field_highlight_bg_image') && !$paragraph->get('field_highlight_bg_image')->isEmpty()) {
+      // Get the media image field.
+      $media = $paragraph->get('field_highlight_bg_image')->entity;
+      // Load the file.
+      $file = \Drupal\file\Entity\File::load($media->field_media_image->target_id);
+      // Also def make sure file isn't empty?!
+      if (!empty($file)) {
+        // If it's not empty, get the uri.
+        $file_uri = $file->getFileUri();
+        // Load the image style and build url.
+        $url_with_style = ImageStyle::load('banner')->buildUrl($file_uri);
+        // Put it in a var to use as bg img in twig.
+        $variables['hero_url'] = $url_with_style;
+      }
+    }
+  }
+}
+

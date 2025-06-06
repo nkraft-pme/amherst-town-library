@@ -1,0 +1,6 @@
+{% for item in items %}
+ {# <div class="novelist-widget-container" data-baseurl="//www.libraryaware.com/2185" data-widgetid="{{ item.content }}"></div>
+<script async src="//www.libraryaware.com/2185/Widgets/ShowResponsiveWidget"></script> #}
+<div><iframe class="collectionResizer" id="collectionSpotlight{{ item.content }}" scrolling="no" src="https://discover.amherstlibrary.org/API/SearchAPI?method=getCollectionSpotlight&amp;id={{ item.content }}&resizeIframe=on" width="100%"></iframe></div>
+{% endfor %}
+

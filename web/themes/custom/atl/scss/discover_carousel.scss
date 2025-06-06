@@ -1,0 +1,97 @@
+/* THIS SCSS FILE IS USED TO COMPILE A CSS FILE THAT IN TURN IS USED BY THE DISCOVER CAROUSELS */
+@import 'colors';
+
+.horizontalCarouselSpotlightWrapper {
+  .scrollerTitleCover {
+
+  }
+}
+.tab-content {
+  border-left: none;
+  border-right: none;
+  border-bottom: 2px solid $color-primary;
+}
+.nav-tabs {
+  border-bottom: 2px solid $color-primary;
+}
+.horizontal-carousel {
+  font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif!important;
+  font-size:16px;
+  .nav-tabs > a.collectionSpotlightTabs {
+    position: relative;
+    display: block;
+    float: left;
+    margin-bottom: 0;
+    margin-left: 8px;
+    line-height: 40px;
+    border: 1px solid $color-secondary;
+    border-radius: 4px 4px 0 0;
+    padding: 0 16px;
+    height: 42px;
+    font-size: 17.6px;
+    background-color: $color-secondary;
+    transition: background-color 300ms ease-in-out, color 300ms ease-in-out, border-color 300ms ease-in-out;
+    color: #4a4a4a;    
+    &:first-child {
+      margin-left:0;
+    }
+    &:hover {
+      text-decoration: none;
+      background-color: $color-secondary;
+      color: $color-text;
+      border-color:$color-border-dark;
+    }
+  } 
+  .nav-tabs > a.collectionSpotlightTabs.active, 
+  .nav-tabs > a.collectionSpotlightTabs.active:hover, 
+  .nav-tabs > a.collectionSpotlightTabs.active:focus {
+    color: $color-text;
+    background-color: #fff;
+    border: 1px solid $color-border-dark;
+    transition: background-color 300ms ease-in-out, color 300ms ease-in-out, border-color 300ms ease-in-out;
+    border-bottom-color: transparent;
+    cursor: default;
+  }
+  a, 
+  a:visited, 
+  .result-head, 
+  #selected-browse-label a, 
+  #selected-browse-label a:visited {
+    color: $color-primary;
+  }  
+  .nav-tabs > a.collectionSpotlightTabs[aria-selected='true'] {
+    color: #FFF;
+    background-color: $color-primary;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+    cursor: default;
+  }  
+}
+.horizontalCarouselSpotlightWrapper .jcarousel-control-prev, 
+.moreLikeThisWrapper .jcarousel-control-prev, 
+.seriesWrapper .jcarousel-control-prev, 
+.horizontalCarouselSpotlightWrapper .jcarousel-control-next, 
+.moreLikeThisWrapper .jcarousel-control-next, 
+.seriesWrapper .jcarousel-control-next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: $color-primary;
+  height: 100%;
+  font-size: 50px;
+  box-shadow: none;
+}
+
+.horizontal-carousel .nav-tabs > a.collectionSpotlightTabs.active, .horizontal-carousel .nav-tabs > a.collectionSpotlightTabs.active:hover, .horizontal-carousel .nav-tabs > a.collectionSpotlightTabs.active:focus {
+  color: #FFF;
+  background-color: $color-primary;
+  border: 1px solid $color-primary;
+  border-bottom-color: transparent;
+  cursor: default;
+}
+
+[role="tablist"] {
+  min-width: 100%;
+  min-height: 40px;
+}

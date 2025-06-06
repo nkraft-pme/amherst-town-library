@@ -1,0 +1,130 @@
+.columns.columns--book:not(.is-desktop) {
+  margin-left:0;
+  margin-right:0;
+  margin-bottom:3rem;
+  display:flex;
+  flex-direction: column-reverse;
+  @media screen and (min-width: $bp-tablet) {
+    flex-direction: row;
+  }
+  .column {
+    padding-left:0;
+    padding-right:0;
+  }
+  .column.is-narrow {
+    
+    padding-left:1.5rem;
+    padding-right:1.5rem;
+    @media screen and (min-width: $bp-tablet) {
+      // padding-left:0;
+      padding-right:0;
+      width: 320px;
+      margin-top: 3rem;
+    }
+    @media screen and (min-width: $bp-desktop) {
+      padding-left:0;
+    }
+    .menu-list {
+      @media screen and (min-width: $bp-sm-phone) {
+        // columns: 2;
+      }
+      @media screen and (min-width: $bp-md-phone) {
+        columns: 2;
+      }
+      @media screen and (min-width: $bp-lg-phone) {
+        columns: 3;
+      }  
+      @media screen and (min-width: $bp-tablet) {
+        columns:unset;
+      }            
+    }
+  }
+}
+
+
+.two-columns {
+  &--column-item {
+    margin-bottom:3rem;
+  }
+  @media screen and (min-width: $bp-desktop) {
+    display: flex;
+    column-gap: 3rem;
+    &--column-item {
+      // margin-bottom:3rem;
+      .image-text--thumbnail {
+        flex-basis: 40%;
+      }
+      .image-text--content {
+        flex-basis:60%;
+      }
+    }
+  }
+}
+@media screen and (min-width: $bp-desktop) {
+  .two-columns--40 {
+    > div:first-child {
+      width:40%;
+    }
+    > div:last-child {
+      width:60%;
+    }  
+  }
+  
+  .two-columns--60 {
+    > div:first-child {
+      width:60%;
+    }
+    > div:last-child {
+      width:40%;
+    }    
+  }
+  
+  .two-columns--33 {
+    > div:first-child {
+      width:33.333%;
+    }
+    > div:last-child {
+      width:66.666%;
+    }    
+  }
+  .two-columns--25 {
+    > div:first-child {
+      width:25%;
+    }
+    > div:last-child {
+      width:75%;
+    }    
+  }
+}
+
+#block-atl-page-title .container, #block-atl-content .content--body {
+  padding-left:1.5rem;
+  padding-right:1.5rem;
+  @media screen and (min-width: $bp-desktop) {
+    padding-left:0;
+    padding-right:0;
+  }
+}
+
+.content--body {
+  blockquote:not(:last-child),
+  dl:not(:last-child),
+  ol:not(:last-child),
+  p:not(:last-child),
+  pre:not(:last-child),
+  ul:not(:last-child) {
+    margin-bottom:2rem;
+  }
+  ol {
+    margin-left: 2em;
+    margin-top: 0;   
+  }
+  ul {
+    list-style: disc outside;
+    margin-left: 2em;
+    margin-top: 0;
+  }
+  li {
+    margin-bottom:1rem;
+  }
+}

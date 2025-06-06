@@ -1,0 +1,23 @@
+.content figure .image-full-width {
+  margin: 0 -2rem 0;
+}
+.align-left, .align-right {
+  margin-bottom:2rem;
+}
+.align-right {
+  margin-left:2rem;
+}
+.align-left {
+  margin-right:2rem;
+}
+a.pdf {
+  &::after {
+    display:inline-block;
+    content: '';
+    width: 20px;
+    height: 20px;
+    background-image: url('/themes/custom/atl/assets/img/pdf.svg');
+    background-size: 20px 20px;
+    margin-left:.3rem;
+  }
+}

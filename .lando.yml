@@ -1,0 +1,77 @@
+name: atl
+recipe: drupal8
+env_file:
+  - local.env
+proxy:
+  appserver:
+    - atl.lndo.site
+  mailhog:
+    - mail.atl.lndo.site
+  build:
+    - bs.atl.lndo.site:3000       
+services:
+  appserver:
+    run_as_root:
+      - chmod +x /app/lando_config/php/xdebug.sh
+    build:
+      - composer --ansi --working-dir=/app install
+    overrides:
+      environment:
+        XDEBUG_MODE:
+        XDEBUG_CONFIG: "client_host=host.docker.internal"
+        PHP_IDE_CONFIG: "serverName=appserver"
+        DRUSH_OPTIONS_URI: "http://atl.lndo.site"
+        # DRUSH_OPTIONS_ROOT: /app/docroot
+  mailhog:
+    type: mailhog
+    portforward: true
+    hogfrom:
+      - appserver
+  build:
+    type: node:14
+    scanner: false
+    overrides:
+      working_dir: /app
+      environment:
+        NODE_ENV: development
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "1"
+      volumes:
+        - /app/web/themes/custom/atl/node_modules
+    build:
+      - cd /app/web/themes/custom/atl && npm ci
+      - cd /app/web/themes/custom/atl && npm run build  
+  cache:
+    type: memcached:1.5.12
+    mem: 64
+config:
+  drush: ^10
+  php: '8.1'
+  webroot: web
+  database: mysql:5.7
+  xdebug: off
+  composer_version: 2-latest
+  config:
+    php: lando_config/php/php.ini
+    database: lando_config/mysql/my.cnf
+tooling:
+  build:
+    service: build
+    dir: /app/web/themes/custom/atl
+    cmd:
+      - npm run build 
+  xdebug:
+    cmd:
+      - appserver: /app/lando_config/php/xdebug.sh
+    user: root
+  drush:
+    service: appserver
+    cmd:
+      - "drush --root=/app/web"
+  composer:
+    service: appserver
+    description: Run composer commands
+    cmd:
+      - composer --ansi --working-dir=/app
+events:
+  post-start:
+    - chmod +x /app/vendor/drush/drush/drush

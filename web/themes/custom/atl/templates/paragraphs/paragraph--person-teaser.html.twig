@@ -1,0 +1,88 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a paragraph.
+ *
+ * Available variables:
+ * - paragraph: Full paragraph entity.
+ *   Only method names starting with "get", "has", or "is" and a few common
+ *   methods such as "id", "label", and "bundle" are available. For example:
+ *   - paragraph.getCreatedTime() will return the paragraph creation timestamp.
+ *   - paragraph.id(): The paragraph ID.
+ *   - paragraph.bundle(): The type of the paragraph, for example, "image" or "text".
+ *   - paragraph.getOwnerId(): The user ID of the paragraph author.
+ *   See Drupal\paragraphs\Entity\Paragraph for a full list of public properties
+ *   and methods for the paragraph object.
+ * - content: All paragraph items. Use {{ content }} to print them all,
+ *   or print a subset such as {{ content.field_example }}. Use
+ *   {{ content|without('field_example') }} to temporarily suppress the printing
+ *   of a given child element.
+ * - attributes: HTML attributes for the containing element.
+ *   The attributes.class element may contain one or more of the following
+ *   classes:
+ *   - paragraphs: The current template type (also known as a "theming hook").
+ *   - paragraphs--type-[type]: The current paragraphs type. For example, if the paragraph is an
+ *     "Image" it would result in "paragraphs--type--image". Note that the machine
+ *     name will often be in a short form of the human readable label.
+ *   - paragraphs--view-mode--[view_mode]: The View Mode of the paragraph; for example, a
+ *     preview would result in: "paragraphs--view-mode--preview", and
+ *     default: "paragraphs--view-mode--default".
+ * - view_mode: View mode; for example, "preview" or "full".
+ * - logged_in: Flag for authenticated user status. Will be true when the
+ *   current user is a logged-in member.
+ * - is_admin: Flag for admin user status. Will be true when the current user
+ *   is an administrator.
+ *
+ * @see template_preprocess_paragraph()
+ *
+ * @ingroup themeable
+ */
+#}
+{%
+  set classes = [
+    'paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    'container',
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished'
+  ]
+%}
+{% block paragraph %}
+  {# <div{{ attributes.addClass(classes) }}> #}
+  {% block content %}
+    <div class="teaser-row">
+    {% if content.field_card_image[0] %}
+    <div class="teaser-row--thumbnail">
+      <figure class="image">
+        {{ content.field_card_image }}
+      </figure>
+    </div>
+    {% else %}
+      {# DO NOTHING #}
+    {% endif %}
+  
+    <div class="teaser-row--content">
+      <div class="{% if content.field_card_link_url[0]['#url'] %}content-with-button{% endif %}">
+        {# <h3 class="teaser-row--heading"><a class="" href="{{ content.field_card_link_url[0]['#url'] }}">{{ content.field_card_link_url[0]['#title'] }}</a></h3> #}
+        <h3 class="teaser-row--heading">{{ content.field_card_title.0 }}</h3>
+        <div class="teaser-row--summary">
+          {% if content.field_title_position[0] %}<div>{{ content.field_title_position.0 }}</div>{% endif %}
+          {% if content.field_email[0] %}<div>{{ content.field_email }}</div>{% endif %}
+          {% if content.field_phone[0] %}<div><a href="tel:{{ content.field_phone.0 }}{% if content.field_phone_extension[0] %},{{ content.field_phone_extension.0 }}{% endif %}">{{ content.field_phone.0 }}</a> {% if content.field_phone_extension[0] %}ext. {{ content.field_phone_extension.0 }}{% endif %}</div>{% endif %}
+          {% if content.field_ext_other[0] %}<div>{{ content.field_ext_other.0 }}</div>{% endif %}
+        </div>
+        {# <div class="teaser-row--summary">{{ content.field_card_teaser }}</div>
+        <div class="teaser-row--summary">{{ content.field_card_teaser }}</div>
+        <div class="teaser-row--summary">{{ content.field_card_teaser }}</div> #}
+        {# {{ content.field_card_link_url }} #}
+        {# {% if content.field_card_link_url[0]['#url'] %}
+        
+        {% endif %} #}
+        {# {{ content.field_card_link_url[0]['#url'] }}
+        {{ content.field_card_link_url[0]['#title'] }} #}
+      </div>
+    </div>
+    </div>
+  {% endblock %}
+  {# </div> #}
+{% endblock paragraph %}
