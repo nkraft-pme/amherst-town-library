@@ -7,50 +7,17 @@
  * https://sqndr.github.io/d8-theming-guide/javascript/behaviors.html
  * https://drupal.org/node/756722#behaviors
  */
-
 (function(Drupal, $) {
-
   'use strict';
   // This handles the functionality for accordions added via paragraphs.
   Drupal.behaviors.paragraph_accordions = {
     attach: function(context, settings, e) {
 
       Drupal.t('Collapse All')
-
-
-
       $(document).ready(function(e) {
 
-
-        // function locationHashChanged() {
-        //   if (location.hash === '#topic-3') {
-        //     console.log("You're visiting a cool feature!");
-        //   }
-        //   console.log("You're visiting a cool feature!");
-        // }
-
-        // $(window).unbind().on('hashchange', function (event) {
-        //   var urlHashChange = window.location.hash;
-        //   if (urlHashChange) {
-        //     var idFromURL = urlHashChange.substring(1);
-        //     var openIDchangeHash = '#' + idFromURL;
-        //     // Keep track of what items are opened via active class
-        //     if ($(openIDchangeHash).hasClass('active')) {
-        //       closeAccordion(openIDchangeHash);
-        //     } else {
-        //       openAccordion(openIDchangeHash);
-        //       // Add delay to page scroll to ensure correct element positioning
-        //       $('html, body').delay(400).animate({ scrollTop: ($(openIDchangeHash).offset().top) - 10 }, 100);
-        //     };
-        //     console.log('open hash onhashchange 6 ' + openIDchangeHash);
-
-
-        //   }
-        // });
-        
-        // window.onhashchange = locationHashChanged;
         /*  Prepare page before any accordion items are clicked. */
-        // If iq-accordion exists...
+        // If iq-accordion exists
         if ($('.iq-accordion', context).length) {
           // Set a unique ID for each accordion heading.
           var $accordionHeader = $('.iq-accordion .iq-accordion--heading', context);
@@ -61,8 +28,6 @@
               //do nothing
             }
           });
-
-
 
           // Hide accordion item contents with JS instead of CSS so that it will
           // be visible if JS is turned off (508).
@@ -91,7 +56,6 @@
       /* Execute this code when an accordion item is clicked. */
       // When accordion heading is clicked, open the accordion, display its content.
       $('.iq-accordion--heading').unbind().click(function() { clickAccordion(this) });
-
 
       $('.topic-intro a').add('.paragraph--type--accordion .iq-accordion--content a').click(function(e) {
         if($(this).attr('href')[0]==='#') {
@@ -181,9 +145,4 @@
     }
   });
 
-  // We pass the parameters of this anonymous function are the global variables
-  // that this script depend on. For example, if the above script requires
-  // jQuery, you should change (Drupal) to (Drupal, jQuery) in the line below
-  // and, in this file's first line of JS, change function (Drupal) to
-  // (Drupal, $)
 }(Drupal, jQuery));
